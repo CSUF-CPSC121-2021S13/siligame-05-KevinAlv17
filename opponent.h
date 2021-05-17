@@ -11,22 +11,6 @@ class OpponentProjectile : public GameElement {
   OpponentProjectile(int x, int y) : GameElement(x, y, 5, 5) {}
   void Draw(graphics::Image& screen) override;
   void Move(const graphics::Image& moving) override;
-  
-  std::unique_ptr<OpponentProjectile> LaunchProjectile() {
-    if (count == 15) {
-      std::unique_ptr<OpponentProjectile> oppTile =
-          std::make_unique<OpponentProjectile>(GetX() + (GetWidth() / 2),
-                                               GetY() + GetHeight());
-      count = 0;
-      return std::move(oppTile);
-    } else {
-      count++;
-      return nullptr;
-    }
-  }
-
- private:
-  int count = 0;
 };
 
 class Opponent : public GameElement {
@@ -39,6 +23,5 @@ class Opponent : public GameElement {
   void Move(const graphics::Image& moving) override;
 
   std::unique_ptr<OpponentProjectile> LaunchProjectile();
-
 };
 #endif

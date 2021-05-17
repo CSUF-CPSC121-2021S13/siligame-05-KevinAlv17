@@ -1,6 +1,6 @@
+#include "game_element.h"
 #include <iostream>
 #include <vector>
-#include "game_element.h"
 #include "cpputils/graphics/image.h"
 
 bool GameElement::IntersectsWith(GameElement* game) {

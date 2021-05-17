@@ -5,8 +5,8 @@
 #include "cpputils/graphics/image.h"
 #include "cpputils/graphics/image_event.h"
 #include "game_element.h"
-#include "player.h"
 #include "opponent.h"
+#include "player.h"
 
 void Game::Init() {
   game_screen.AddMouseEventListener(*this);
@@ -47,7 +47,7 @@ void Game::LaunchProjectiles() {
     std::unique_ptr<OpponentProjectile> oppTile =
         std::make_unique<OpponentProjectile>(opponents_[i]->GetX(),
                                              opponents_[i]->GetY());
-    if (opponent_projectiles_[i]->LaunchProjectile() != nullptr) {
+    if (opponents_[i]->LaunchProjectile() != nullptr) {
       opponent_projectiles_.push_back(std::move(oppTile));
     }
   }
@@ -78,33 +78,6 @@ void Game::FilterIntersections() {
       opponents_[i]->SetIsActive(false);
       HasLost_ = true;
     }
-  }
-}
-
-void Game::UpdateScreen() {
-  game_screen.DrawRectangle(0, 0, game_screen.GetWidth(),
-                            game_screen.GetHeight(), 255, 255, 255);
-  game_screen.DrawText(0, 0, "Score: " + std::to_string(score), 5, 0, 0, 0);
-  if (player.GetIsActive() == true) {
-    player.Draw(game_screen);
-  }
-  for (int i = 0; i < opponents_.size(); i++) {
-    if (opponents_[i]->GetIsActive() == true) {
-      opponents_[i]->Draw(game_screen);
-    }
-  }
-  for (int j = 0; j < opponent_projectiles_.size(); j++) {
-    if (opponent_projectiles_[j]->GetIsActive() == true) {
-      opponent_projectiles_[j]->Draw(game_screen);
-    }
-  }
-  for (int k = 0; k < player_projectiles_.size(); k++) {
-    if (player_projectiles_[k]->GetIsActive() == true) {
-      player_projectiles_[k]->Draw(game_screen);
-    }
-  }
-  if (HasLost_ == false) {
-    game_screen.DrawText(5, 250, "GAME OVER!", 25, 0, 0, 0);
   }
 }
 
@@ -142,12 +115,37 @@ void Game::RemoveInactive() {
   }
 }
 
+void Game::UpdateScreen() {
+  game_screen.DrawRectangle(0, 0, game_screen.GetWidth(),
+                            game_screen.GetHeight(), 255, 255, 255);
+  game_screen.DrawText(0, 0, "Score: " + std::to_string(score), 5, 0, 0, 0);
+  if (player.GetIsActive() == true) {
+    player.Draw(game_screen);
+  }
+  for (int i = 0; i < opponents_.size(); i++) {
+    if (opponents_[i]->GetIsActive() == true) {
+      opponents_[i]->Draw(game_screen);
+    }
+  }
+  for (int j = 0; j < opponent_projectiles_.size(); j++) {
+    if (opponent_projectiles_[j]->GetIsActive() == true) {
+      opponent_projectiles_[j]->Draw(game_screen);
+    }
+  }
+  for (int k = 0; k < player_projectiles_.size(); k++) {
+    if (player_projectiles_[k]->GetIsActive() == true) {
+      player_projectiles_[k]->Draw(game_screen);
+    }
+  }
+  if (HasLost_) {
+    game_screen.DrawText(250, 250, "GAME OVER!", 25, 0, 0, 0);
+  }
+}
+
 void Game::OnAnimationStep() {
   if (opponents_.size() == 0) {
     CreateOpponents();
   }
-  // CreateOpponentProjectiles();
-  // CreatePlayerProjectiles();
   MoveGameElements();
   LaunchProjectiles();
   FilterIntersections();

@@ -2,8 +2,8 @@
 #include <iostream>
 #include <vector>
 #include "cpputils/graphics/image.h"
-#include "game_element.h"
 #include "game.h"
+#include "game_element.h"
 
 void Opponent::Draw(graphics::Image& screen) {
   screen.DrawCircle(GetX() + 23, GetY() + 23, 23, 79, 244, 27);
@@ -34,3 +34,16 @@ void OpponentProjectile::Move(const graphics::Image& moving) {
   }
 }
 
+std::unique_ptr<OpponentProjectile> Opponent::LaunchProjectile() {
+  int count = 0;
+  if (count == 15) {
+    std::unique_ptr<OpponentProjectile> oppTile =
+        std::make_unique<OpponentProjectile>(GetX() + (GetWidth() / 2),
+                                             GetY() + GetHeight());
+    count = 0;
+    return std::move(oppTile);
+  } else {
+    count++;
+    return nullptr;
+  }
+}

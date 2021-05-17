@@ -31,20 +31,12 @@ class Game : public graphics::AnimationEventListener,
     return player_projectiles_;
   }
 
-  void CreateOpponents(); //{
-    //Opponent opponent(100, 100);
-    //opponents_.push_back(opponent);
-  //}
+  void CreateOpponents();
 
-  void CreateOpponentProjectiles(); //{
-    //OpponentProjectile opponent_projectile(300, 300);
-    //opponent_projectiles_.push_back(opponent_projectile);
-  //}
+  void CreateOpponentProjectiles();
 
-  void CreatePlayerProjectiles(); //{
-    //PlayerProjectile player_projectile(500, 500);
-    //player_projectiles_.push_back(player_projectile);
-  //}
+  void CreatePlayerProjectiles();
+
   void Init();
   void UpdateScreen();
   void Start();
@@ -62,7 +54,7 @@ class Game : public graphics::AnimationEventListener,
   std::vector<std::unique_ptr<PlayerProjectile>> player_projectiles_;
   Player player;
   int score = 0;
-  bool HasLost_ = false;
+  bool HasLost_;
 };
 
 #endif
